@@ -1,58 +1,42 @@
 import type { Request, Response } from 'express';
+import { TicketService } from '../services/ticket.service';
 
 
 export class TicketController {
 
-  constructor(){};
+  constructor(
+    private readonly ticketService:TicketService = new TicketService()
+  ){};
 
   public getTickets = async ( req:Request, res:Response ) => {
-    res.json({
-      ok: true,
-      msg: 'getTickets'
-    });
+    res.json( this.ticketService.tickets);
   }
 
-
   public lastTicket = async ( req:Request, res:Response ) => {
-    res.json({
-      ok: true,
-      msg: 'lastTicket'
-    });
+    res.json( this.ticketService.lastTicketNumber );
   }
 
   public pendingTickets = async ( req:Request, res:Response ) => {
-    res.json({
-      ok: true,
-      msg: 'pendingTickets'
-    });
+    res.json( this.ticketService.pendingTickets );
   }
 
   public drawTicket = async ( req:Request, res:Response ) => {
-    res.json({
-      ok: true,
-      msg: 'drawTicket'
-    });
+    const { desk } = req.params;
+
+    res.json( this.ticketService.drawTicket( desk ) );
   }
 
   public workingOn = async ( req:Request, res:Response ) => {
-    res.json({
-      ok: true,
-      msg: 'workingOn'
-    });
+    res.json( this.ticketService.workingTickets );
   }
 
   public createTicket = async ( req:Request, res:Response ) => {
-    res.json({
-      ok: true,
-      msg: 'createTicket'
-    });
+    res.status( 201 ).json( this.ticketService.createTicket() );
   }
 
   public doneTicket = async ( req:Request, res:Response ) => {
-    res.json({
-      ok: true,
-      msg: 'doneTicket'
-    });
+    const { id } = req.params;
+    res.json( this.ticketService.doneTicket( id ) );
   }
 
 
