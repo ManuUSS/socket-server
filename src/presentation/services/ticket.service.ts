@@ -19,6 +19,57 @@ export class TicketService{
 
   constructor(){};
 
+
+  public get pendingTickets():Ticket[]{
+    return this.tickets.filter( ticket =>  !ticket.done && !ticket.done );
+  };
+
+  public lastTicketNumber():number{
+    return (this.tickets.length > 0) 
+      ? this.tickets[this.tickets.length - 1].number 
+      : 0;
+  }
+
+  public createTicket():Ticket{
+    
+    const ticket:Ticket = {
+      id: UUIDAdapter.v4(),
+      number: this.lastTicketNumber() + 1,
+      createdAt: new Date(),
+      done: false
+    };
+
+    this.tickets.push( ticket );
+
+    return ticket;
+  }
+
+  public drawTicket( desk:string ) {
+    const ticket:Ticket = this.pendingTickets[0];
+
+    if( !ticket ) return { status:'error', message:'No hay tickets pendientes' };
+
+
+    ticket.handleAtDesk = desk;
+    ticket.handleAt = new Date();
+
+    return { status:'success', ticket };
+  }
+
+  public doneTicket( ticketId:string ) {
+    const ticket = this.tickets.find( ticket => ticket.id === ticketId );
+
+    if( !ticket ) return { status:'error', message:'Ticket no encontrado' };
+
+    this.tickets.map( t => {
+      if( t.id === ticketId ) t.done = true;
+      return t;
+    });
+
+    return { status:'success', ticket };
+  }
+
+
 };
 
 
