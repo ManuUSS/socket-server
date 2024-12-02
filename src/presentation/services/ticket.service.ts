@@ -17,6 +17,9 @@ export class TicketService{
     { id: UUIDAdapter.v4(), number: 10, createdAt: new Date(), done: false },
   ];
 
+  private readonly workingOnTickets:Ticket[] = [];
+  
+
   constructor(){};
 
 
