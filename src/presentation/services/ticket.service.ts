@@ -18,13 +18,17 @@ export class TicketService{
   ];
 
   private readonly workingOnTickets:Ticket[] = [];
-  
+
 
   constructor(){};
 
 
   public get pendingTickets():Ticket[]{
     return this.tickets.filter( ticket =>  !ticket.done && !ticket.done );
+  };
+
+  public get workingTickets():Ticket[]{
+    return this.workingOnTickets.splice(0, 4);
   };
 
   public lastTicketNumber():number{
@@ -52,9 +56,12 @@ export class TicketService{
 
     if( !ticket ) return { status:'error', message:'No hay tickets pendientes' };
 
-
     ticket.handleAtDesk = desk;
     ticket.handleAt = new Date();
+
+    this.workingOnTickets.unshift({ ...ticket });
+
+
 
     return { status:'success', ticket };
   }
