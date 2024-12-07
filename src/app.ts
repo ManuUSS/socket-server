@@ -20,12 +20,10 @@ function main() {
   WssService.initWss({ server: httpServer });
 
   server.setRoutes( AppRoutes.routes );
-
+  
   // Web Socket Server
   httpServer.listen(envs.PORT, () => {
     console.log(`Server running on port ${ envs.PORT }`);
   });
-  
-  // Express Server
-  // server.start();
+
 }
