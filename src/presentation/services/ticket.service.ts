@@ -1,5 +1,6 @@
 import { UUIDAdapter } from '../../config/uuid.adapter';
 import type { Ticket } from '../../domain/interfaces/ticket';
+import { WssService } from './wss.service';
 
 
 export class TicketService{
@@ -20,7 +21,9 @@ export class TicketService{
   private readonly workingOnTickets:Ticket[] = [];
 
 
-  constructor(){};
+  constructor(
+    private readonly wssService:WssService = WssService.instance
+  ){};
 
 
   public get pendingTickets():Ticket[]{
@@ -47,7 +50,8 @@ export class TicketService{
     };
 
     this.tickets.push( ticket );
-
+    this.onTicketNumberChange();
+    
     return ticket;
   }
 
@@ -77,6 +81,10 @@ export class TicketService{
     });
 
     return { status:'success', ticket };
+  }
+
+  private onTicketNumberChange(){
+    this.wssService.sendMessage('on-ticket-count-changed', this.pendingTickets.length );
   }
 
 
