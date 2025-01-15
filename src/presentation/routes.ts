@@ -14,7 +14,7 @@ export class AppRoutes {
     // Definir las rutas
     // router.use('/api/todos', /*TodoRoutes.routes */ );
 
-    router.get('/api/ticket', TicketRoutes.routes);
+    router.use('/api/ticket', TicketRoutes.routes);
 
     return router;
   }
