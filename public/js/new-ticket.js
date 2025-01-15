@@ -5,7 +5,8 @@ const createTicketButton = document.querySelector('button');
 async function getLastTicket() {
   const response = await fetch('/api/ticket/last');
   const data = await response.json();
-  currentTicket.innerText = data.ticket;
+  console.log( data );
+  currentTicket.innerText = data;
   return data;
 } 
 
